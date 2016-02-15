@@ -39,6 +39,7 @@ public class SAMLConfluenceConfig implements SAMLConfig {
 	public static final String X509_CERTIFICATE_SETTING = "saml2.x509Certificate";
 	public static final String IDP_REQUIRED_SETTING = "saml2.idpRequired";
 	public static final String REDIRECT_URL_SETTING = "saml2.redirectUrl";
+    public static final String MAX_AUTHENTICATION_AGE_SETTING = "saml2.maxAuthenticationAge";
 	
 	public void setPluginSettingsFactory(PluginSettingsFactory pluginSettingsFactory) {
 		this.pluginSettings = pluginSettingsFactory.createGlobalSettings();
@@ -67,7 +68,11 @@ public class SAMLConfluenceConfig implements SAMLConfig {
 	public void setRedirectUrl(String redirectUrl) {
 		pluginSettings.put(REDIRECT_URL_SETTING, redirectUrl);		
 	}
-	
+
+	public void setMaxAuthenticationAge(String maxAuthAge) {
+		pluginSettings.put(MAX_AUTHENTICATION_AGE_SETTING, maxAuthAge);
+	}
+
 	public String getIdpRequired() {
 		return StringUtils.defaultString((String)pluginSettings.get(IDP_REQUIRED_SETTING));
 	}
@@ -98,6 +103,10 @@ public class SAMLConfluenceConfig implements SAMLConfig {
 	
 	public String getRedirectUrl() {
 		return StringUtils.defaultString((String)pluginSettings.get(REDIRECT_URL_SETTING));
+	}
+
+	public String getMaxAuthenticationAge() {
+		return StringUtils.defaultString((String)pluginSettings.get(MAX_AUTHENTICATION_AGE_SETTING));
 	}
 
 	public void setDefaultBaseUrl(String defaultBaseURL) {

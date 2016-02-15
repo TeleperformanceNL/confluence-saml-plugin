@@ -97,8 +97,9 @@ public class SsoLoginServlet extends HttpServlet {
 	        messageContext.setLocalEntityEndpoint(SAMLUtil.getEndpoint(messageContext.getLocalEntityRoleMetadata().getEndpoints(), messageContext.getInboundSAMLBinding(), request.getRequestURL().toString()));
 	        messageContext.getPeerEntityMetadata().setEntityID(saml2Config.getIdpEntityId());
 
-	        WebSSOProfileConsumer consumer = new WebSSOProfileConsumerImpl(context.getSamlProcessor(), context.getMetadataManager());
-	        SAMLCredential credential = consumer.processAuthenticationResponse(messageContext);
+	        WebSSOProfileConsumerImpl consumer = new WebSSOProfileConsumerImpl(context.getSamlProcessor(), context.getMetadataManager());
+            consumer.setMaxAuthenticationAge(Integer.parseInt(saml2Config.getMaxAuthenticationAge())*3600);
+            SAMLCredential credential = consumer.processAuthenticationResponse(messageContext);
 
 	        request.getSession().setAttribute("SAMLCredential", credential);
 

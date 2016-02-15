@@ -40,6 +40,7 @@ public class ConfigureAction extends ConfluenceActionSupport {
 	private String x509Certificate;
 	private String idpRequired;
 	private String redirectUrl;
+    private String maxAuthenticationAge;
 
 	private SAMLConfluenceConfig saml2Config;
 
@@ -98,6 +99,14 @@ public class ConfigureAction extends ConfluenceActionSupport {
 		this.redirectUrl = redirectUrl;
 	}
 
+	public String getMaxAuthenticationAge() {
+		return maxAuthenticationAge;
+	}
+
+    public void setMaxAuthenticationAge(String maxAuthenticationAge) {
+		this.maxAuthenticationAge = maxAuthenticationAge;
+	}
+
 	protected List getPermissionTypes() {
 		List requiredPermissions = super.getPermissionTypes();
 		requiredPermissions.add("ADMINISTRATECONFLUENCE");
@@ -142,6 +151,10 @@ public class ConfigureAction extends ConfluenceActionSupport {
 			setIdpRequired("true");
 		}
 
+        if (StringUtils.isBlank(getMaxAuthenticationAge())) {
+			addActionError(getText("saml2Plugin.admin.maxAuthAgeEmpty"));
+		}
+
 		super.validate();
 	}
 
@@ -157,6 +170,7 @@ public class ConfigureAction extends ConfluenceActionSupport {
 		} else {
 			setIdpRequired("false");
 		}
+        setMaxAuthenticationAge(saml2Config.getMaxAuthenticationAge());
 		return super.doDefault();
 	}
 
@@ -167,6 +181,7 @@ public class ConfigureAction extends ConfluenceActionSupport {
 		saml2Config.setX509Certificate(getX509Certificate());
 		saml2Config.setIdpRequired(getIdpRequired());
 		saml2Config.setRedirectUrl(getRedirectUrl());
+        setMaxAuthenticationAge(getMaxAuthenticationAge());
 
 		addActionMessage(getText("saml2plugin.admin.message.saved"));
 		return "success";
